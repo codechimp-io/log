@@ -22,7 +22,7 @@ func init() {
 	zerolog.CallerFieldName = "producer"
 	zerolog.SetGlobalLevel(zerolog.DebugLevel)
 
-	Logger = zerolog.New(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.RFC3339Nano}).With().Timestamp().Logger()	
+	Logger = zerolog.New(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.RFC3339Nano, NoColor: true}).With().Timestamp().Logger()	
 
 }
 
