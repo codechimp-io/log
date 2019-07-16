@@ -4,6 +4,7 @@ package log
 import (
 	stdlog "log"
 	"os"
+	"time"
 
 	"github.com/rs/zerolog"
 )
@@ -21,7 +22,7 @@ func init() {
 	zerolog.CallerFieldName = "producer"
 	zerolog.SetGlobalLevel(zerolog.DebugLevel)
 
-	Logger = zerolog.New(os.Stderr).With().Timestamp().Logger()	
+	Logger = zerolog.New(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.RFC3339Nano}).With().Timestamp().Logger()	
 
 }
 
