@@ -2,4 +2,4 @@ module github.com/codechimp-io/log
 
 go 1.12
 
-require github.com/rs/zerolog v1.15.0
+require github.com/rs/zerolog v1.17.2
