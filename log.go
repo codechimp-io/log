@@ -3,27 +3,35 @@ package log
 
 import (
 	stdlog "log"
-	"os"
-	"time"
+	"strings"
 
 	"github.com/rs/zerolog"
+	"github.com/rs/zerolog/log"
 )
 
 // Logger is the global logger.
 var Logger zerolog.Logger
 
 func init() {
-	// log with nanosecond precision time
-	zerolog.TimeFieldFormat = ""
-	zerolog.DurationFieldInteger = true
-	zerolog.TimestampFieldName = "t"
-	zerolog.LevelFieldName = "l"
-	zerolog.MessageFieldName = "m"
-	zerolog.CallerFieldName = "producer"
-	zerolog.SetGlobalLevel(zerolog.DebugLevel)
+	// Init logger
+	newLogger()
+}
 
-	Logger = zerolog.New(zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.RFC3339Nano, NoColor: true}).With().Timestamp().Logger()	
+func newLogger(opts ...Options) {
+	if len(opts) > 0 {
+		Configure(opts[0])
+	} else {
+		Configure(DefaultOptions)
+	}
 
+	logger := log.With()
+
+	if !DefaultOptions.Concise && len(DefaultOptions.Tags) > 0 {
+		logger = logger.Fields(map[string]interface{}{
+			"tags": DefaultOptions.Tags,
+		})
+	}
+	Logger = logger.Logger()
 }
 
 // NewStd creates new standart logger with zerolog as output
@@ -33,7 +41,7 @@ func NewStd() *stdlog.Logger {
 
 // WithCaller adds caller name to the logs
 func WithCaller(name string) {
-	Logger = Logger.With().Str(zerolog.CallerFieldName, name).Logger()
+	Logger = Logger.With().Str("service", strings.ToLower(name)).Logger()
 }
 
 // Infof
