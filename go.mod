@@ -4,5 +4,5 @@ go 1.12
 
 require (
 	github.com/go-chi/chi/v5 v5.2.1
-	github.com/rs/zerolog v1.33.0
+	github.com/rs/zerolog v1.34.0
 )
